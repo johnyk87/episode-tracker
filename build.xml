@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="EpisodeTracker" default="build" basedir=".">
+
+    <!-- properties -->
+
+    <!-- load properties files -->
+    <property file="build.properties"/>
+    <!-- properties with default folder locations -->
+    <property name="folder.root" value="${basedir}"/>
+    <property name="folder.src" value="${folder.root}/src"/>
+    <property name="folder.lib" value="${folder.root}/lib"/>
+    <property name="folder.bin" value="${folder.root}/bin"/>
+    <property name="folder.bin.classes" value="${folder.bin}/classes"/>
+    <property name="folder.bin.jar" value="${folder.bin}/jar"/>
+    <!-- properties with default package definitions -->
+    <property name="package.xsd" value="jk.tracker.core"/>
+    <property name="folder.xsd" value="${folder.src}/jk/tracker/core"/>
+    <!-- properties with default file locations -->
+    <property name="file.jar" value="${folder.bin.jar}/${ant.project.name}.jar"/>
+
+    <!-- classpath -->
+	
+    <path id="project.classpath">
+        <pathelement location="${folder.bin.classes}" />
+        <fileset dir="${folder.lib}">
+            <include name="*.jar" />
+        </fileset>
+    </path>
+
+    <!-- basic -->
+
+    <target name="mkdirs">
+        <mkdir dir="${folder.bin}"/>
+        <mkdir dir="${folder.bin.classes}"/>
+        <mkdir dir="${folder.bin.jar}"/>
+    </target>
+
+    <target name="rmdirs">
+        <delete dir="${folder.bin}"/>
+    </target>
+
+    <!-- compile -->
+	
+	<taskdef name="xjc" classname="com.sun.tools.xjc.XJCTask">
+        <classpath refid="project.classpath" />
+	</taskdef>
+    <target name="xjc">
+        <xjc schema="${folder.src}/tracker.xsd" destdir="${folder.src}" package="${package.xsd}" removeOldOutput="yes">
+            <produces dir="${folder.xsd}" />
+		</xjc>
+    </target>
+
+    <target name="compile" depends="mkdirs,xjc">
+        <javac srcdir="${folder.src}" destdir="${folder.bin.classes}"
+			   debug="true" debuglevel="lines,vars,source"
+			   optimize="true" deprecation="true" verbose="false">
+            <compilerarg line="" />
+            <classpath refid="project.classpath" />
+        </javac>
+    </target>
+
+    <!-- library -->
+
+    <target name="create-jar" depends="compile">
+        <jar destfile="${file.jar}">
+            <fileset dir="${folder.bin.classes}" includes="**/*.class,**/*.properties,**/*.xml"/>
+        	<manifest>
+        		<attribute name="Main-Class" value="jk.tracker.Workflow" />
+    		</manifest>
+        </jar>
+    </target>
+
+    <!-- api -->
+
+    <target name="clean" depends="rmdirs" description="Clean compiled classes and jar" />
+    <target name="build" depends="create-jar" description="Compile java code and create jar" />
+    <target name="rebuild" depends="clean,build" description="Clean and build project" />
+
+</project>

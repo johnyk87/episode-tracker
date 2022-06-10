@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<tracker>
+    <profile formats="rmvb|mkv|avi" autoupdate="true" autotrack="true" folders="D:\" name="MyProfile"/>
+</tracker>

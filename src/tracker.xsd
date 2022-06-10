@@ -1,0 +1,44 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  
+    <xs:element name="tracker">    
+    	<xs:complexType>
+      		<xs:sequence>
+        		<xs:element name="profile" type="Profile" minOccurs="1" maxOccurs="unbounded" />
+      		</xs:sequence>
+    	</xs:complexType>
+    </xs:element>
+	
+	<xs:complexType name="Episode">
+      <xs:attribute name="number" type="xs:string" use="required" />
+      <xs:attribute name="name" type="xs:string" use="required" />
+      <xs:attribute name="filename" type="xs:string" use="required" />
+      <xs:attribute name="seen" type="xs:boolean" use="required" />
+    </xs:complexType>
+  
+    <xs:complexType name="Season">
+      <xs:sequence>
+        <xs:element name="episode" type="Episode" minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+      <xs:attribute name="name" type="xs:string" use="required" />
+    </xs:complexType>
+  
+    <xs:complexType name="Show">
+      <xs:sequence>
+        <xs:element name="season" type="Season" minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+      <xs:attribute name="name" type="xs:string" use="required" />
+      <xs:attribute name="hidden" type="xs:boolean" use="required" />
+    </xs:complexType>
+  
+    <xs:complexType name="Profile">
+      <xs:sequence>
+        <xs:element name="show" type="Show" minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+      <xs:attribute name="name" type="xs:string" use="required" />
+      <xs:attribute name="folders" type="xs:string" use="required" />
+      <xs:attribute name="autotrack" type="xs:boolean" use="required" />
+      <xs:attribute name="autoupdate" type="xs:boolean" use="required" />
+      <xs:attribute name="formats" type="xs:string" use="required" />
+    </xs:complexType>
+  
+</xs:schema>
